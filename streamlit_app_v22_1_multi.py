@@ -8,6 +8,65 @@ import os
 from v22_1_translator import USI17_V22_1_Translator
 import tempfile
 
+# ============================================================================
+# PASSWORD PROTECTION
+# ============================================================================
+def check_password():
+    """
+    Password protection for the application.
+    
+    To change password: Edit the line below with your desired password.
+    Current password: CKD2026USI17
+    """
+    def password_entered():
+        """Checks whether a password entered by the user is correct."""
+        if st.session_state["password"] == "CKD2026USI17":  # ← CHANGE PASSWORD HERE
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # Don't store password
+        else:
+            st.session_state["password_correct"] = False
+
+    # First run, show password input
+    if "password_correct" not in st.session_state:
+        st.markdown('<div class="main-header">🔒 USI17 V22.1 Translation System</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sub-header">CKD Corporation - Authorized Access Only</div>', unsafe_allow_html=True)
+        st.text_input(
+            "Enter Password",
+            type="password",
+            on_change=password_entered,
+            key="password",
+            placeholder="Enter password to access system"
+        )
+        st.info("💡 Contact chris248ma@gmail.com for access credentials")
+        return False
+    
+    # Password incorrect, show error
+    elif not st.session_state["password_correct"]:
+        st.markdown('<div class="main-header">🔒 USI17 V22.1 Translation System</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sub-header">CKD Corporation - Authorized Access Only</div>', unsafe_allow_html=True)
+        st.text_input(
+            "Enter Password",
+            type="password",
+            on_change=password_entered,
+            key="password",
+            placeholder="Enter password to access system"
+        )
+        st.error("❌ Incorrect password. Please try again.")
+        st.info("💡 Contact chris248ma@gmail.com for access credentials")
+        return False
+    
+    # Password correct
+    else:
+        return True
+
+# Check password before loading the app
+if not check_password():
+    st.stop()  # Don't continue if password is wrong
+
+# ============================================================================
+# MAIN APPLICATION (only loads if password is correct)
+# ============================================================================
+
 # Page config
 st.set_page_config(
     page_title="USI17 V22.1 - Multi-Directional Translation",
