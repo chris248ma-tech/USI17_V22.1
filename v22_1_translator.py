@@ -879,16 +879,17 @@ Begin translation:
         text = re.sub(r'⟦TAG_\d+⟧', '', text)
         return text.strip()
     
-def get_stats(self) -> Dict:
-    """Get translation statistics"""
-    return {
-        'total_cost': self.total_cost,
-        'budget_remaining': self.max_budget - self.total_cost,
-        'budget_used_pct': (self.total_cost / self.max_budget * 100) if self.max_budget > 0 else 0,
-        'translations_completed': self.translation_count,
-        'tm_hit_rate': self.tm.get_hit_rate(),
-        'costs_by_model': self.model_costs
-    }
+    def get_stats(self) -> Dict:
+        """Get translation statistics"""
+        return {
+            'total_cost': self.total_cost,
+            'budget_remaining': self.max_budget - self.total_cost,
+            'budget_used_pct': (self.total_cost / self.max_budget * 100) if self.max_budget > 0 else 0,
+            'translations_completed': self.translation_count,
+            'tm_hit_rate': self.tm.get_hit_rate(),
+            'costs_by_model': self.model_costs,
+            'agent_0c_rules_applied': self.agent_0c.get_statistics()
+        }
 
 
 class TranslationMemory:
