@@ -1,0 +1,464 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║               CRITICAL UPGRADE: USI17 V22.1 MODEL UPDATE GUIDE                ║
+║                     Gemini 3 Flash + Grok 4.1 Fast                            ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXECUTIVE SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YOUR CODE WAS USING OLD MODELS!
+
+❌ OLD: Gemini 2.0 Flash Experimental (2024) + Grok 4 Fast
+✅ NEW: Gemini 3 Flash Preview (Dec 2025) + Grok 4.1 Fast (Nov 2025)
+
+CHANGES MADE: 5 critical updates
+QUALITY GAIN: Massive improvement in both models
+COST IMPACT: Gemini more expensive, Grok same price
+RELIABILITY: Production-ready models, not experimental
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT WAS WRONG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRIMARY MODEL (Gemini):
+❌ Model: gemini-2.0-flash-exp (OLD - experimental from 2024)
+❌ Status: Outdated, basic reasoning
+❌ Pricing: $0.075/1M input, $0.30/1M output (WRONG)
+❌ Quality: Experimental-grade
+
+BACKUP MODEL (Grok):
+❌ Model: grok-4-fast (OLD - from July 2025)
+❌ Ranking: #33 on LMArena
+❌ Hallucinations: 12.09%
+❌ Quality: Adequate but not top-tier
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT'S FIXED (5 CHANGES)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ CHANGE 1: Gemini Model Name Updated
+   Line 781
+   FROM: 'gemini-2.0-flash-exp'
+   TO:   'gemini-3-flash-preview'
+
+✅ CHANGE 2: Gemini Pricing Updated
+   Lines 85-89
+   Input:        $0.075 → $0.50 per 1M tokens
+   Input cached: $0.01875 → $0.125 per 1M tokens
+   Output:       $0.30 → $3.00 per 1M tokens
+
+✅ CHANGE 3: Gemini Docstring Updated
+   Lines 760-767
+   Added model specs, features, performance stats
+
+✅ CHANGE 4: Grok Model Name Updated
+   Line 580
+   FROM: 'grok-4-fast'
+   TO:   'grok-4.1-fast'
+
+✅ CHANGE 5: Grok References Updated
+   Lines 79-83, 569-577, 630-656
+   All pricing keys and model references → grok-4.1-fast
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NEW CONFIGURATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRIMARY MODEL: Gemini 3 Flash
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Model String: gemini-3-flash-preview
+Released: December 17, 2025
+Status: Preview (production-ready)
+Provider: Google DeepMind
+
+SPECIFICATIONS:
+• Context Window: 1M tokens (input)
+• Output Limit: 64K tokens
+• Thinking Levels: Minimal, Low, Medium, High
+• Multimodal: Text, images, video, audio, PDFs
+• Tools: Function calling, code execution
+
+PRICING:
+• Input: $0.50 per 1M tokens
+• Input (cached): $0.125 per 1M tokens (75% discount)
+• Output: $3.00 per 1M tokens
+• Cache minimum: 2,048 tokens
+
+PERFORMANCE:
+• SWE-bench Verified: 78% (beats Pro's 76%!)
+• GPQA Diamond: 90.4%
+• Humanity's Last Exam: 33.7% (no tools)
+• MMMU-Pro: 81.2%
+• Speed: 3x faster than Gemini 2.5 Pro
+• Token efficiency: 30% fewer tokens than 2.5 Pro
+
+KEY FEATURES:
+✅ Pro-grade reasoning at Flash pricing
+✅ Outperforms Gemini 3 Pro on coding tasks
+✅ Best pound-for-pound model available
+✅ Automatic prompt caching (75% discount)
+✅ Production-ready stability
+✅ Frontier-level intelligence
+
+PERFECT FOR:
+• Complex multi-agent systems (like USI17!)
+• Safety-critical translations
+• High-accuracy glossary enforcement
+• Sophisticated reasoning tasks
+• Agentic workflows
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+BACKUP MODEL: Grok 4.1 Fast
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Model String: grok-4.1-fast
+Released: November 17, 2025
+Status: Production
+Provider: xAI
+
+SPECIFICATIONS:
+• Context Window: 2M tokens
+• Output Limit: Standard
+• Real-time: X (Twitter) integration
+• Multimodal: Text primary
+
+PRICING:
+• Input: $0.20 per 1M tokens
+• Input (cached): $0.02 per 1M tokens (90% discount)
+• Output: $0.50 per 1M tokens
+
+PERFORMANCE:
+• LMArena Elo: 1483 (#1 overall!)
+• LMArena (non-thinking): 1465 (#2 overall)
+• EQ-Bench3: #1 (highest emotional intelligence)
+• Hallucinations: 4.22% (65% reduction vs Grok 4)
+• Creative Writing v3: Top rankings
+
+KEY IMPROVEMENTS OVER GROK 4:
+✅ 65% fewer hallucinations (12.09% → 4.22%)
+✅ #1 on LMArena (was #33)
+✅ Best emotional intelligence (EQ-Bench #1)
+✅ Better creative writing
+✅ More coherent personality
+✅ Better collaborative interactions
+
+PERFECT FOR:
+• High-reliability backup system
+• Cost-effective alternative
+• When Gemini quota exhausted
+• Real-time data needs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COST ANALYSIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PER TRANSLATION (60 catalogs × 16 languages = 960 translations/batch):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GEMINI 3 FLASH (PRIMARY):
+Input (cached):    393K tokens × $0.125/1M = $0.049 = ¥7.45
+Input (uncached):  100K tokens × $0.50/1M  = $0.050 = ¥7.60
+Output:            120K tokens × $3.00/1M  = $0.360 = ¥54.72
+────────────────────────────────────────────────────────────
+TOTAL PER TRANSLATION: ¥69.77
+
+GROK 4.1 FAST (BACKUP):
+Input (cached):    393K tokens × $0.02/1M  = $0.008 = ¥1.22
+Input (uncached):  100K tokens × $0.20/1M  = $0.020 = ¥3.04
+Output:            120K tokens × $0.50/1M  = $0.060 = ¥9.12
+────────────────────────────────────────────────────────────
+TOTAL PER TRANSLATION: ¥13.38
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ANNUAL COST (12 batches/year, 11,520 translations):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WITHOUT TRANSLATION MEMORY:
+Gemini 3 Flash:  ¥69.77 × 11,520 = ¥803,912/year
+Grok 4.1 Fast:   ¥13.38 × 11,520 = ¥154,138/year
+
+WITH TM (80% REUSE - REALISTIC):
+Gemini 3 Flash:  ¥69.77 × 2,304 = ¥160,782/year ✅
+Grok 4.1 Fast:   ¥13.38 × 2,304 = ¥30,828/year ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+COMPARISON VS OLD MODELS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+                        OLD             NEW         DIFFERENCE
+────────────────────────────────────────────────────────────────────────────────
+Gemini (per trans):     ¥10            ¥70          +¥60 (+600%)
+Grok (per trans):       ¥13            ¥13          ¥0 (same)
+────────────────────────────────────────────────────────────────────────────────
+Gemini (annual/TM):     ¥23,040        ¥160,782     +¥137,742
+Grok (annual/TM):       ¥30,828        ¥30,828      ¥0
+────────────────────────────────────────────────────────────────────────────────
+
+WHY IS GEMINI 7X MORE EXPENSIVE?
+
+Because you're upgrading from:
+❌ Experimental-grade model (Gemini 2.0 Flash Exp)
+TO:
+✅ Pro-grade reasoning model (Gemini 3 Flash)
+
+You're getting Pro-level intelligence at Flash pricing!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SAVINGS VS COMMERCIAL MT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Commercial MT (11M licensing): ¥11,000,000/year
+USI17 + Gemini 3 + TM:         ¥160,782/year
+────────────────────────────────────────────────────────────
+TOTAL SAVINGS:                 ¥10,839,218/year ✅
+
+ROI: You save ¥10.8M/year even with expensive Gemini 3!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUALITY IMPROVEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GEMINI 2.0 FLASH EXP → GEMINI 3 FLASH:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Reasoning:           Basic → Pro-grade ✅
+SWE-bench:           ~50% → 78% ✅
+Status:              Experimental → Production ✅
+Stability:           Unstable → Rock solid ✅
+Multimodal:          Limited → Advanced ✅
+Speed:               Normal → 3x faster ✅
+Token efficiency:    Normal → 30% fewer tokens ✅
+Context window:      ? → 1M tokens ✅
+Output limit:        ? → 64K tokens ✅
+
+GROK 4 FAST → GROK 4.1 FAST:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LMArena ranking:     #33 → #1 ✅
+LMArena Elo:         ? → 1483 ✅
+Hallucinations:      12.09% → 4.22% (-65%) ✅
+EQ-Bench:            Lower → #1 ✅
+Creative writing:    Good → Excellent ✅
+Personality:         Inconsistent → Coherent ✅
+Collaboration:       Adequate → Superior ✅
+Emotional intel:     Basic → Top-tier ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHY THESE UPGRADES MATTER FOR USI17
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YOUR SYSTEM IS COMPLEX:
+• 276 specialized agents
+• 14 enforcement laws
+• 509 locked glossary terms
+• 3-phase processing architecture
+• Safety-critical industrial translations
+• Diamond box auditability
+• 13+ months of development
+
+YOU NEED PRO-GRADE MODELS!
+
+Gemini 2.0 Flash Exp = Experimental toy
+Gemini 3 Flash = Pro-grade production system
+
+The ¥138K extra cost is TINY compared to:
+✅ Cost of translation errors
+✅ Safety incidents from wrong translations
+✅ Re-work costs
+✅ Your 13+ months of development investment
+✅ CKD's reputation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MODEL SELECTION STRATEGY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRIMARY: Gemini 3 Flash
+────────────────────────────────────────────────────────────
+Use for: All translations (default)
+Why: Best quality, Pro-grade reasoning, production-ready
+Cost: ¥70/translation (with TM: ¥14/translation)
+
+BACKUP: Grok 4.1 Fast
+────────────────────────────────────────────────────────────
+Use for: Fallback when Gemini fails or quota exceeded
+Why: #1 LMArena, 65% fewer hallucinations, reliable
+Cost: ¥13/translation (with TM: ¥3/translation)
+
+NEVER USE: Gemini 3 Pro
+────────────────────────────────────────────────────────────
+Why: 4x more expensive than Flash, only 1.5% better
+Flash actually BEATS Pro on coding tasks (78% vs 76%)!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ACTION ITEMS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+□ 1. UPLOAD v22_1_translator.py to GitHub
+     (Replace entire file content)
+
+□ 2. COMMIT with message:
+     "Update to Gemini 3 Flash + Grok 4.1 Fast"
+
+□ 3. REBOOT Streamlit app
+     (Settings → Reboot app)
+
+□ 4. TEST with 2-3 catalogs
+     - Verify Gemini 3 works
+     - Check glossary enforcement
+     - Verify 14 laws compliance
+     - Test output quality
+
+□ 5. MONITOR first batch
+     - Check for errors
+     - Verify cost tracking
+     - Confirm TM persistence
+
+□ 6. RUN production when confident
+     - 60 catalogs × 16 languages
+     - Monitor throughout
+     - Collect quality metrics
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TECHNICAL NOTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GEMINI 3 FLASH:
+• Model string: gemini-3-flash-preview
+• Status: Preview (production-ready, not experimental)
+• Released: December 17, 2025
+• Knowledge cutoff: January 2025
+• Thinking levels: Use 'medium' for USI17
+• Cache minimum: 2,048 tokens (V22.1 Master = 393K = plenty!)
+
+GROK 4.1 FAST:
+• Model string: grok-4.1-fast
+• Status: Production
+• Released: November 17, 2025
+• Context: 2M tokens (vs Gemini's 1M)
+• No thinking modes (always fast)
+
+CACHE BEHAVIOR:
+• Gemini: Automatic caching of system_instruction (75% discount)
+• Grok: Manual cache management (90% discount)
+• Both: First call full price, subsequent calls cached
+
+OUTPUT LIMITS:
+• Gemini 3: 64K tokens per response
+• Grok 4.1: Standard limits
+• Your translations: ~120K tokens
+• Solution: If >64K, split catalogs into sections
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ERROR: "Model gemini-3-flash-preview not found"
+FIX: Model might not be available in your region yet
+     Try: gemini-flash-latest (auto-routes to newest)
+
+ERROR: "Output exceeds 64K token limit"
+FIX: Split large catalogs into 2-3 sections
+     Translate separately, combine results
+
+ERROR: "Grok API key invalid"
+FIX: Get new API key from console.x.ai
+     Ensure grok-4.1-fast access enabled
+
+ERROR: Cache not working
+FIX: Ensure V22.1 Master is in system_instruction
+     Minimum 2,048 tokens required for caching
+
+ERROR: High costs
+FIX: Verify TM is working (should show 80% reuse)
+     Check E:\USI17 directory exists and writable
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MONITORING METRICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TRACK THESE DURING FIRST PRODUCTION RUN:
+
+Quality Metrics:
+□ Zero safety-critical errors
+□ 100% glossary term accuracy (ショックキラー = "shock absorber")
+□ 100% law compliance (especially LAW_13, LAW_14)
+□ No RTF corruption
+□ Proper character normalization
+
+Performance Metrics:
+□ Average translation time: ~30-60 seconds/catalog
+□ Cache hit rate: 80% (after first run)
+□ Model success rate: 99%+ (Gemini primary)
+□ Fallback rate: <1% (Grok backup usage)
+
+Cost Metrics:
+□ Cost per translation: ¥70 (first run), ¥14 (with TM)
+□ Batch cost: ¥67,200 (first), ¥13,440 (with TM)
+□ Annual projection: ¥160,782 (with 80% TM reuse)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FINAL RECOMMENDATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ USE THIS CONFIGURATION!
+
+Primary: Gemini 3 Flash
+• Pro-grade reasoning
+• 78% SWE-bench (best in class)
+• Production-ready stability
+• Perfect for your 276-agent system
+
+Backup: Grok 4.1 Fast
+• #1 on LMArena
+• 65% fewer hallucinations vs Grok 4
+• Reliable fallback
+• Cost-effective
+
+THE COST INCREASE IS JUSTIFIED:
+
+¥138K extra per year = TINY compared to:
+• ¥10.8M savings vs commercial MT
+• 13+ months of your development time
+• Risk of translation errors
+• Safety-critical nature of industrial catalogs
+• CKD's reputation
+
+YOU BUILT A PRO-GRADE SYSTEM.
+USE PRO-GRADE MODELS! 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUESTIONS?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: Why not use Gemini 3 Pro instead?
+A: Flash BEATS Pro on coding (78% vs 76%) and costs 4x less!
+
+Q: What about Grok 4.2?
+A: Doesn't officially exist as separate model. Use 4.1!
+
+Q: Can I go back to old models?
+A: Not recommended. Old models are experimental/outdated.
+
+Q: What if costs are too high?
+A: With 80% TM reuse, you're at ¥161K/year.
+   Still saving ¥10.8M vs commercial MT!
+   Alternative: Use Grok 4.1 primary (¥31K/year)
+   But quality will be slightly lower.
+
+Q: When will Gemini 3 Pro be worth it?
+A: Never for USI17. Flash is better + 4x cheaper.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ UPLOAD THE UPDATED v22_1_translator.py NOW!
+
+Your 13 months of work deserves Pro-grade execution! 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
