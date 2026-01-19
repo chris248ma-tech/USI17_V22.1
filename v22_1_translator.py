@@ -77,15 +77,15 @@ class USI17_V22_1_Translator:
         
         # Pricing (per 1M tokens in USD)
         self.pricing = {
-            'grok-4-fast': {
+            'grok-4.1-fast': {  # Grok 4.1 (Nov 2025)
                 'input': 0.20,
                 'input_cached': 0.02,  # 90% discount
                 'output': 0.50
             },
             'gemini-3-flash': {
-                'input': 0.075,
-                'input_cached': 0.01875,  # 75% discount
-                'output': 0.30
+                'input': 0.50,  # Updated for Gemini 3 Flash (Dec 2025)
+                'input_cached': 0.125,  # 75% discount (0.50 * 0.25)
+                'output': 3.00  # Updated for Gemini 3 Flash
             },
             'claude-sonnet-4-5': {
                 'input': 3.00,
@@ -567,7 +567,14 @@ Begin translation:
         }
     
     def _translate_with_grok(self, prompt: str, source_text: str, target_langs: List[str] = None) -> Dict:
-        """Translate using Grok 4 Fast (2M context) - supports multiple targets"""
+        """
+        Translate using Grok 4.1 Fast (backup) - supports multiple targets
+        
+        Model: grok-4.1-fast (Nov 2025)
+        Features: #1 LMArena (1483 Elo), 65% less hallucinations vs Grok 4
+        Cost: $0.20/1M input, $0.50/1M output (90% cache discount)
+        Context: 2M tokens
+        """
         if not self.grok_client:
             raise Exception("Grok API key not configured")
         
@@ -577,7 +584,7 @@ Begin translation:
         try:
             # Use V22.1 Master as system prompt
             response = self.grok_client.chat.completions.create(
-                model="grok-4-fast",
+                model="grok-4.1-fast",  # Grok 4.1 (Nov 2025) - #1 LMArena, 65% less hallucinations
                 messages=[
                     {"role": "system", "content": self.v22_1_system},
                     {"role": "user", "content": prompt}
@@ -624,14 +631,14 @@ Begin translation:
             # Cached tokens: $0.02/1M (90% discount)
             # Uncached tokens: $0.20/1M (normal price)
             cost_input_cached = cached_tokens / 1_000_000 * 0.02
-            cost_input_uncached = uncached_tokens / 1_000_000 * self.pricing['grok-4-fast']['input']
-            cost_output = tokens_output / 1_000_000 * self.pricing['grok-4-fast']['output']
+            cost_input_uncached = uncached_tokens / 1_000_000 * self.pricing['grok-4.1-fast']['input']
+            cost_output = tokens_output / 1_000_000 * self.pricing['grok-4.1-fast']['output']
             
             cost_usd = cost_input_cached + cost_input_uncached + cost_output
             cost_jpy = cost_usd * self.usd_to_jpy
             
             if cached_tokens > 0:
-                savings_usd = (cached_tokens / 1_000_000 * self.pricing['grok-4-fast']['input']) - cost_input_cached
+                savings_usd = (cached_tokens / 1_000_000 * self.pricing['grok-4.1-fast']['input']) - cost_input_cached
                 savings_jpy = savings_usd * self.usd_to_jpy
                 self.cache_stats['cache_savings_jpy'] += savings_jpy
                 print(f"   Cache savings this call: ¥{savings_jpy:.2f}")
@@ -642,7 +649,7 @@ Begin translation:
             
             return {
                 'translations': translations,  # Dict of {lang: translation}
-                'model': 'grok-4-fast',
+                'model': 'grok-4.1-fast',
                 'cost_jpy': cost_jpy,
                 'tokens_input': tokens_input,
                 'tokens_output': tokens_output
@@ -762,7 +769,9 @@ Begin translation:
         Translate using Gemini 3 Flash (primary) - supports multiple targets
         
         Uses prompt caching for 75% discount on repeated system prompt
-        Gemini is 42% cheaper than Grok with similar performance
+        Model: gemini-3-flash-preview (Dec 2025)
+        Features: Pro-grade reasoning, 78% SWE-bench, 3x faster than 2.5 Pro
+        Cost: $0.50/1M input, $3/1M output (75% cache discount)
         """
         if not self.gemini_api_key:
             raise Exception("Gemini API key not configured")
@@ -778,7 +787,7 @@ Begin translation:
             
             # Use Gemini 3 Flash with prompt caching
             model = genai.GenerativeModel(
-                'gemini-2.0-flash-exp',  # Latest model with caching
+                'gemini-3-flash-preview',  # Gemini 3 Flash (Dec 2025) - Pro-grade reasoning
                 system_instruction=self.v22_1_system  # System prompt (will be cached!)
             )
             
