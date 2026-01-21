@@ -1,5 +1,5 @@
 """
-USI17 V22.2 Complete Translation System
+USI17 V22.1 Complete Translation System
 Full 276-agent architecture with all Laws and glossary terms
 Uses Grok 4 Fast for 2M token context window
 """
@@ -17,7 +17,7 @@ from agent_63_back_translation_validator import Agent_63_Back_Translation_Valida
 
 class USI17_V22_1_Translator:
     """
-    Complete USI17 V22.2 translation system
+    Complete USI17 V22.1 translation system
     - 276 agents (0-266, excluding 226)
     - 14 Laws enforced
     - 535-term glossary (updated from 509 in V22.1)
@@ -26,8 +26,8 @@ class USI17_V22_1_Translator:
     """
     
     def __init__(self, grok_api_key: str, gemini_api_key: str = None, claude_api_key: str = None, 
-                 max_budget: float = 30000.0, V22_2_master_path: str = None):
-        """Initialize V22.2 translator"""
+                 max_budget: float = 30000.0, V22_1_master_path: str = None):
+        """Initialize V22.1 translator"""
         self.grok_client = OpenAI(
             api_key=grok_api_key,
             base_url="https://api.x.ai/v1"
@@ -46,7 +46,7 @@ class USI17_V22_1_Translator:
         }
         self.cache_log_file = 'cache_monitoring.log'
         
-        self.V22_2_system = self._load_V22_2_master(V22_2_master_path)
+        self.V22_1_system = self._load_V22_1_master(V22_1_master_path)
         
         self.max_budget = max_budget
         self.total_cost = 0.0
@@ -71,25 +71,25 @@ class USI17_V22_1_Translator:
         self.agent_63 = Agent_63_Back_Translation_Validator(self)
         print("✅ Agent 63 loaded")
     
-    def _load_V22_2_master(self, path: str) -> str:
-        """Load V22.2 Master file"""
+    def _load_V22_1_master(self, path: str) -> str:
+        """Load V22.1 Master file"""
         if not path or not os.path.exists(path):
-            raise ValueError(f"V22.2 Master file not found: {path}")
+            raise ValueError(f"V22.1 Master file not found: {path}")
         
         with open(path, 'r', encoding='utf-8') as f:
             system = f.read()
         
         lines = len(system.split('\n'))
         if lines < 47000:
-            raise ValueError(f"V22.2 Master truncated! Expected 47.8K lines, got {lines}")
+            raise ValueError(f"V22.1 Master truncated! Expected 47.8K lines, got {lines}")
         
-        print(f"✅ V22.2 Master loaded: {lines:,} lines")
+        print(f"✅ V22.1 Master loaded: {lines:,} lines")
         return system
     
     def translate(self, source_text: str, source_lang: str = 'ja', target_langs: List[str] = None,
                   input_format: str = 'text', preserve_tags: bool = True, 
                   english_first: bool = True) -> Dict:
-        """Translate using V22.2 system"""
+        """Translate using V22.1 system"""
         if target_langs is None or len(target_langs) == 0:
             target_langs = ['en']
         
@@ -132,7 +132,7 @@ class USI17_V22_1_Translator:
                 tm_hits=tm_hits, simplification_result=simplification_result
             )
         
-        prompt = self._build_V22_2_multi_prompt(
+        prompt = self._build_V22_1_multi_prompt(
             source_text, source_lang, remaining_targets, input_format, preserve_tags
         )
         
@@ -166,10 +166,10 @@ class USI17_V22_1_Translator:
             tm_hits=tm_hits, simplification_result=simplification_result
         )
     
-    def _build_V22_2_multi_prompt(self, source_text: str, source_lang: str, 
+    def _build_V22_1_multi_prompt(self, source_text: str, source_lang: str, 
                                    target_langs: List[str], input_format: str, 
                                    preserve_tags: bool) -> str:
-        """Build V22.2 prompt"""
+        """Build V22.1 prompt"""
         lang_names = {
             'ja': 'Japanese', 'en': 'English', 'de': 'German', 'fr': 'French',
             'es': 'Spanish', 'em': 'Spanish (MX)', 'pt': 'Portuguese', 
@@ -182,7 +182,7 @@ class USI17_V22_1_Translator:
         target_names = [lang_names.get(t, t.upper()) for t in target_langs]
         
         prompt = f"""
-You are USI17 V22.2 with 276 agents.
+You are USI17 V22.1 with 276 agents.
 
 Translate from {source_name} to: {', '.join(target_names)}
 
@@ -190,7 +190,7 @@ SOURCE TEXT:
 {source_text}
 
 INSTRUCTIONS:
-1. Use V22.2 system (535 terms)
+1. Use V22.1 system (535 terms)
 2. CRITICAL: ショックキラー = "shock absorber" NEVER "shock killer"
 3. Output TAB-delimited
 
@@ -322,7 +322,7 @@ Begin:
         response = self.grok_client.chat.completions.create(
             model="grok-4.1-fast",
             messages=[
-                {"role": "system", "content": self.V22_2_system},
+                {"role": "system", "content": self.V22_1_system},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.1
@@ -366,7 +366,7 @@ Begin:
         
         model = genai.GenerativeModel(
             'gemini-3-flash-preview',
-            system_instruction=self.V22_2_system
+            system_instruction=self.V22_1_system
         )
         
         response = model.generate_content(
