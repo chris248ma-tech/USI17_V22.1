@@ -5,7 +5,7 @@ Complete support for ANY of 17 languages as source → multiple targets
 
 import streamlit as st
 import os
-from v22_1_translator import USI17_V22_1_Translator
+from V22_2_translator import USI17_V22_2_Translator
 import tempfile
 
 # ============================================================================
@@ -145,7 +145,7 @@ with st.sidebar:
                                 help="Optional premium backup")
     
     st.subheader("📂 V22.1 Master File")
-    v22_1_file = st.file_uploader("Upload USI17_V22_1_MASTER.txt", type=['txt'],
+    V22_2_file = st.file_uploader("Upload USI17_V22_2_MASTER.txt", type=['txt'],
                                    help="Required: 47,000-line complete system")
     
     st.subheader("💰 Budget Control")
@@ -157,20 +157,20 @@ with st.sidebar:
     if st.button("🚀 Initialize Translator", use_container_width=True, type="primary"):
         if not grok_key:
             st.error("❌ Grok API key required!")
-        elif not v22_1_file:
+        elif not V22_2_file:
             st.error("❌ V22.1 Master file required!")
         else:
             with tempfile.NamedTemporaryFile(delete=False, suffix='.txt', mode='w', encoding='utf-8') as tmp:
-                tmp.write(v22_1_file.getvalue().decode('utf-8'))
+                tmp.write(V22_2_file.getvalue().decode('utf-8'))
                 tmp_path = tmp.name
             
             try:
-                st.session_state.translator = USI17_V22_1_Translator(
+                st.session_state.translator = USI17_V22_2_Translator(
                     grok_api_key=grok_key,
                     gemini_api_key=gemini_key if gemini_key else None,
                     claude_api_key=claude_key if claude_key else None,
                     max_budget=max_budget,
-                    v22_1_master_path=tmp_path
+                    V22_2_master_path=tmp_path
                 )
                 st.session_state.initialized = True
                 st.success("✅ V22.1 system loaded! All 276 agents active.")
@@ -194,7 +194,7 @@ if not st.session_state.initialized:
     st.info("""
     **Quick Start:**
     1. Enter Grok API key (get at https://x.ai/api)
-    2. Upload USI17_V22_1_MASTER.txt (47,000 lines)
+    2. Upload USI17_V22_2_MASTER.txt (47,000 lines)
     3. Click "Initialize Translator"
     
     **System Capabilities:**
