@@ -1,5 +1,5 @@
 """
-USI17 V22.1 Streamlit Web Interface - MULTI-DIRECTIONAL
+USI17 V22.2 Streamlit Web Interface - MULTI-DIRECTIONAL
 Complete support for ANY of 17 languages as source → multiple targets
 """
 
@@ -28,7 +28,7 @@ def check_password():
 
     # First run, show password input
     if "password_correct" not in st.session_state:
-        st.markdown('<div class="main-header">🔒 USI17 V22.1 Translation System</div>', unsafe_allow_html=True)
+        st.markdown('<div class="main-header">🔒 USI17 V22.2 Translation System</div>', unsafe_allow_html=True)
         st.markdown('<div class="sub-header">CKD Corporation - Authorized Access Only</div>', unsafe_allow_html=True)
         st.text_input(
             "Enter Password",
@@ -42,7 +42,7 @@ def check_password():
     
     # Password incorrect, show error
     elif not st.session_state["password_correct"]:
-        st.markdown('<div class="main-header">🔒 USI17 V22.1 Translation System</div>', unsafe_allow_html=True)
+        st.markdown('<div class="main-header">🔒 USI17 V22.2 Translation System</div>', unsafe_allow_html=True)
         st.markdown('<div class="sub-header">CKD Corporation - Authorized Access Only</div>', unsafe_allow_html=True)
         st.text_input(
             "Enter Password",
@@ -69,7 +69,7 @@ if not check_password():
 
 # Page config
 st.set_page_config(
-    page_title="USI17 V22.1 - Multi-Directional Translation",
+    page_title="USI17 V22.2 - Multi-Directional Translation",
     page_icon="🌐",
     layout="wide"
 )
@@ -129,7 +129,7 @@ if 'source_lang' not in st.session_state:
     st.session_state.source_lang = 'ja'
 
 # Header
-st.markdown('<div class="main-header">🌐 USI17 V22.1 - Multi-Directional Translation</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">🌐 USI17 V22.2 - Multi-Directional Translation</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">ANY of 17 languages → Multiple target languages simultaneously</div>', unsafe_allow_html=True)
 
 # Sidebar configuration
@@ -144,7 +144,7 @@ with st.sidebar:
     claude_key = st.text_input("Claude API Key (Premium)", type="password",
                                 help="Optional premium backup")
     
-    st.subheader("📂 V22.1 Master File")
+    st.subheader("📂 V22.2 Master File")
     V22_2_file = st.file_uploader("Upload USI17_V22_2_MASTER.txt", type=['txt'],
                                    help="Required: 47,000-line complete system")
     
@@ -158,7 +158,7 @@ with st.sidebar:
         if not grok_key:
             st.error("❌ Grok API key required!")
         elif not V22_2_file:
-            st.error("❌ V22.1 Master file required!")
+            st.error("❌ V22.2 Master file required!")
         else:
             with tempfile.NamedTemporaryFile(delete=False, suffix='.txt', mode='w', encoding='utf-8') as tmp:
                 tmp.write(V22_2_file.getvalue().decode('utf-8'))
@@ -173,7 +173,7 @@ with st.sidebar:
                     V22_2_master_path=tmp_path
                 )
                 st.session_state.initialized = True
-                st.success("✅ V22.1 system loaded! All 276 agents active.")
+                st.success("✅ V22.2 system loaded! All 276 agents active.")
             except Exception as e:
                 st.error(f"❌ Initialization failed: {str(e)}")
     
@@ -306,7 +306,7 @@ else:
                 elif len(selected_targets) == 0:
                     st.error("❌ Please select at least one target language")
                 else:
-                    with st.spinner(f"Translating to {len(selected_targets)} languages with V22.1..."):
+                    with st.spinner(f"Translating to {len(selected_targets)} languages with V22.2..."):
                         try:
                             result = st.session_state.translator.translate(
                                 source_text=source_text,
@@ -590,7 +590,7 @@ else:
         st.markdown("### 📚 Help & Documentation")
         
         st.markdown(f"""
-        ## USI17 V22.1 Multi-Directional Translation System
+        ## USI17 V22.2 Multi-Directional Translation System
         
         ### Key Innovation
         **Unlike competitors** (Google Translate, DeepL, Systran):
@@ -626,9 +626,9 @@ else:
         - Cost: ~¥50 per page
         
         ### Critical Features
-        - **276 Agents**: Complete V22.1 architecture
+        - **276 Agents**: Complete V22.2 architecture
         - **14 Laws**: Including SI unit spacing (50mm → 50 mm in English)
-        - **509 Glossary Terms**: LOCKED translations (ショックキラー = "shock absorber" NEVER "shock killer")
+        - **535 Glossary Terms**: LOCKED translations (ショックキラー = "shock absorber" NEVER "shock killer")
         - **TAG Preservation**: Maintains InDesign, memoQ, Wordfast formatting
         - **Translation Memory**: 70% cost savings on repeated content
         
@@ -645,7 +645,7 @@ else:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; font-size: 12px;'>
-USI17 V22.1 Multi-Directional Translation | 17 Languages × 16 Targets = 272 Translation Directions | 
+USI17 V22.2 Multi-Directional Translation | 17 Languages × 16 Targets = 272 Translation Directions | 
 Grok 4 Fast (2M Context) | Built for CKD Corporation
 </div>
 """, unsafe_allow_html=True)
