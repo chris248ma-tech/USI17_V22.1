@@ -15,7 +15,7 @@ from rtf_processor import RTFProcessor
 from agent_0c_controlled_language import Agent_0C_Controlled_Language
 from agent_63_back_translation_validator import Agent_63_Back_Translation_Validator
 
-class USI17_V22_1_Translator:
+class USI17_V22_2_Translator:
     """
     Complete USI17 V22.1 translation system
     - 276 agents (0-266, excluding 226)
@@ -26,7 +26,7 @@ class USI17_V22_1_Translator:
     """
     
     def __init__(self, grok_api_key: str, gemini_api_key: str = None, claude_api_key: str = None, 
-                 max_budget: float = 30000.0, v22_1_master_path: str = None):
+                 max_budget: float = 30000.0, V22_2_master_path: str = None):
         """
         Initialize V22.1 translator with complete system
         
@@ -35,7 +35,7 @@ class USI17_V22_1_Translator:
             gemini_api_key: Gemini API key (backup - 1M context)
             claude_api_key: Claude API key (backup - 200K context)
             max_budget: Maximum budget in Japanese Yen
-            v22_1_master_path: Path to USI17_V22_1_MASTER.txt file
+            V22_2_master_path: Path to USI17_V22_2_MASTER.txt file
         """
         # Initialize API clients
         self.grok_client = OpenAI(
@@ -58,7 +58,7 @@ class USI17_V22_1_Translator:
         self.cache_log_file = 'cache_monitoring.log'
         
         # Load V22.1 Master system
-        self.v22_1_system = self._load_v22_1_master(v22_1_master_path)
+        self.V22_2_system = self._load_V22_2_master(V22_2_master_path)
         
         # Budget tracking
         self.max_budget = max_budget
@@ -110,7 +110,7 @@ class USI17_V22_1_Translator:
         
         print(f"✅ Total specialized agents: 11 (2 coordinators + 9 specialized)")
     
-    def _load_v22_1_master(self, path: str) -> str:
+    def _load_V22_2_master(self, path: str) -> str:
         """
         Load complete V22.1 Master file (47,000 lines)
         CSV Protocol: Zero truncation, mechanical extraction
@@ -239,7 +239,7 @@ class USI17_V22_1_Translator:
             )
         
         # Build V22.1 prompt for remaining targets
-        prompt = self._build_v22_1_multi_prompt(
+        prompt = self._build_V22_2_multi_prompt(
             source_text, source_lang, remaining_targets, 
             input_format, preserve_tags
         )
@@ -283,7 +283,7 @@ class USI17_V22_1_Translator:
             tm_hits=tm_hits
         )
     
-    def _build_v22_1_multi_prompt(self, source_text: str, source_lang: str, 
+    def _build_V22_2_multi_prompt(self, source_text: str, source_lang: str, 
                                    target_langs: List[str], input_format: str, 
                                    preserve_tags: bool) -> str:
         """
@@ -422,12 +422,12 @@ Begin translation:
             'agent_0c_applied': simplification_result['rules_applied'] if source_lang == 'ja' else []  # NEW: Agent 0C tracking
         }
     
-    def _build_v22_1_prompt(self, source_text: str, source_lang: str, target_lang: str,
+    def _build_V22_2_prompt(self, source_text: str, source_lang: str, target_lang: str,
                             input_format: str, preserve_tags: bool) -> str:
         """
         Build complete V22.1 translation prompt (single target - for backwards compatibility)
         """
-        return self._build_v22_1_multi_prompt(source_text, source_lang, [target_lang], 
+        return self._build_V22_2_multi_prompt(source_text, source_lang, [target_lang], 
                                               input_format, preserve_tags)
     
     def validate_with_back_translation(self, source_text: str, translation: str,
@@ -586,7 +586,7 @@ Begin translation:
             response = self.grok_client.chat.completions.create(
                 model="grok-4.1-fast",  # Grok 4.1 (Nov 2025) - #1 LMArena, 65% less hallucinations
                 messages=[
-                    {"role": "system", "content": self.v22_1_system},
+                    {"role": "system", "content": self.V22_2_system},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.1
@@ -599,7 +599,7 @@ Begin translation:
             translations = self._parse_multi_language_response(response_text, target_langs)
             
             # Calculate cost with prompt caching support
-            tokens_input = response.usage.prompt_tokens if hasattr(response.usage, 'prompt_tokens') else len(self.v22_1_system.split()) + len(prompt.split())
+            tokens_input = response.usage.prompt_tokens if hasattr(response.usage, 'prompt_tokens') else len(self.V22_2_system.split()) + len(prompt.split())
             tokens_output = response.usage.completion_tokens if hasattr(response.usage, 'completion_tokens') else len(response_text.split())
             
             # Check for cached tokens (Grok automatic caching)
@@ -788,7 +788,7 @@ Begin translation:
             # Use Gemini 3 Flash with prompt caching
             model = genai.GenerativeModel(
                 'gemini-3-flash-preview',  # Gemini 3 Flash (Dec 2025) - Pro-grade reasoning
-                system_instruction=self.v22_1_system  # System prompt (will be cached!)
+                system_instruction=self.V22_2_system  # System prompt (will be cached!)
             )
             
             # Generate translation
@@ -809,7 +809,7 @@ Begin translation:
             # Gemini automatically caches system_instruction
             usage = response.usage_metadata
             
-            tokens_input = usage.prompt_token_count if hasattr(usage, 'prompt_token_count') else len(self.v22_1_system.split()) + len(prompt.split())
+            tokens_input = usage.prompt_token_count if hasattr(usage, 'prompt_token_count') else len(self.V22_2_system.split()) + len(prompt.split())
             tokens_output = usage.candidates_token_count if hasattr(usage, 'candidates_token_count') else len(response_text.split())
             
             # Check for cached tokens
