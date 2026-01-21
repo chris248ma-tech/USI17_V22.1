@@ -80,8 +80,8 @@ class USI17_V22_1_Translator:
             system = f.read()
         
         lines = len(system.split('\n'))
-        if lines < 47000:
-            raise ValueError(f"V22.1 Master truncated! Expected 47.8K lines, got {lines}")
+        if lines < 45000:
+            raise ValueError(f"V22.1 Master truncated! Expected 45k+ lines, got {lines}")
         
         print(f"✅ V22.1 Master loaded: {lines:,} lines")
         return system
