@@ -1,5 +1,5 @@
 """
-USI17 V22.1 Complete Translation System
+USI17 V22.2 Complete Translation System
 Full 276-agent architecture with all Laws and glossary terms
 Uses Grok 4 Fast for 2M token context window
 """
@@ -17,10 +17,10 @@ from agent_63_back_translation_validator import Agent_63_Back_Translation_Valida
 
 class USI17_V22_2_Translator:
     """
-    Complete USI17 V22.1 translation system
+    Complete USI17 V22.2 translation system
     - 276 agents (0-266, excluding 226)
     - 14 Laws enforced
-    - 509-term glossary
+    - 535-term glossary (updated from 509)
     - RTF/TAG preservation
     - Bilingual output
     """
@@ -28,7 +28,7 @@ class USI17_V22_2_Translator:
     def __init__(self, grok_api_key: str, gemini_api_key: str = None, claude_api_key: str = None, 
                  max_budget: float = 30000.0, V22_2_master_path: str = None):
         """
-        Initialize V22.1 translator with complete system
+        Initialize V22.2 translator with complete system
         
         Args:
             grok_api_key: Grok API key (primary - 2M context)
@@ -57,7 +57,7 @@ class USI17_V22_2_Translator:
         }
         self.cache_log_file = 'cache_monitoring.log'
         
-        # Load V22.1 Master system
+        # Load V22.2 Master system
         self.V22_2_system = self._load_V22_2_master(V22_2_master_path)
         
         # Budget tracking
@@ -112,14 +112,14 @@ class USI17_V22_2_Translator:
     
     def _load_V22_2_master(self, path: str) -> str:
         """
-        Load complete V22.1 Master file (47,000 lines)
+        Load complete V22.2 Master file (47,000 lines)
         CSV Protocol: Zero truncation, mechanical extraction
         
         Returns:
-            Complete V22.1 system as string
+            Complete V22.2 system as string
         """
         if not path or not os.path.exists(path):
-            raise ValueError(f"V22.1 Master file not found: {path}")
+            raise ValueError(f"V22.2 Master file not found: {path}")
         
         with open(path, 'r', encoding='utf-8') as f:
             system = f.read()
@@ -127,7 +127,7 @@ class USI17_V22_2_Translator:
         # Verify integrity
         lines = len(system.split('\n'))
         if lines < 46000:
-            raise ValueError(f"V22.1 Master appears truncated! Expected 47K lines, got {lines}")
+            raise ValueError(f"V22.2 Master appears truncated! Expected 47K lines, got {lines}")
         
         # Verify critical components
         required_components = [
@@ -142,16 +142,16 @@ class USI17_V22_2_Translator:
         
         for component in required_components:
             if component not in system:
-                raise ValueError(f"V22.1 Master missing critical component: {component}")
+                raise ValueError(f"V22.2 Master missing critical component: {component}")
         
-        print(f"✅ V22.1 Master loaded: {lines:,} lines, {len(system):,} characters")
+        print(f"✅ V22.2 Master loaded: {lines:,} lines, {len(system):,} characters")
         return system
     
     def translate(self, source_text: str, source_lang: str = 'ja', target_langs: List[str] = None,
                   input_format: str = 'text', preserve_tags: bool = True, 
                   english_first: bool = True) -> Dict:
         """
-        Translate using complete V22.1 system - ANY language to MULTIPLE languages
+        Translate using complete V22.2 system - ANY language to MULTIPLE languages
         
         Args:
             source_text: Text to translate
@@ -235,10 +235,10 @@ class USI17_V22_2_Translator:
             return self._build_multi_language_result(
                 source_text, source_lang, target_langs, translations,
                 model='TM', cost_jpy=0.0, tokens_input=0, tokens_output=0,
-                tm_hits=tm_hits
+                tm_hits=tm_hits, simplification_result=simplification_result
             )
         
-        # Build V22.1 prompt for remaining targets
+        # Build V22.2 prompt for remaining targets
         prompt = self._build_V22_2_multi_prompt(
             source_text, source_lang, remaining_targets, 
             input_format, preserve_tags
@@ -280,14 +280,14 @@ class USI17_V22_2_Translator:
             model=result['model'], cost_jpy=cost_jpy,
             tokens_input=result['tokens_input'],
             tokens_output=result['tokens_output'],
-            tm_hits=tm_hits
+            tm_hits=tm_hits, simplification_result=simplification_result
         )
     
     def _build_V22_2_multi_prompt(self, source_text: str, source_lang: str, 
                                    target_langs: List[str], input_format: str, 
                                    preserve_tags: bool) -> str:
         """
-        Build complete V22.1 translation prompt for MULTIPLE target languages
+        Build complete V22.2 translation prompt for MULTIPLE target languages
         Uses FULL system (no truncation)
         """
         # Language code to name mapping
@@ -303,7 +303,7 @@ class USI17_V22_2_Translator:
         target_names = [lang_names.get(t, t.upper()) for t in target_langs]
         
         prompt = f"""
-You are USI17 V22.1 - Complete professional translation system with 276 agents.
+You are USI17 V22.2 - Complete professional translation system with 276 agents.
 
 TASK:
 Translate from {source_name} to MULTIPLE languages SIMULTANEOUSLY
@@ -319,9 +319,9 @@ SOURCE TEXT:
 {source_text}
 
 INSTRUCTIONS:
-1. Use ALL 276 agents from the V22.1 system loaded in your context
+1. Use ALL 276 agents from the V22.2 system loaded in your context
 2. Enforce ALL 14 Laws (especially LAW_13 RTF preservation, LAW_14 character normalization)
-3. Apply 509-term glossary (LOCKED terms like ショックキラー = "shock absorber")
+3. Apply 535-term glossary (LOCKED terms like ショックキラー = "shock absorber")
 4. Preserve all TAGs if input contains formatting
 5. Translate SIMULTANEOUSLY to all {len(target_langs)} target languages
 6. Output TAB-delimited format with one row per source segment
@@ -341,7 +341,7 @@ CRITICAL GLOSSARY TERMS (LOCKED - 100% enforcement):
 - チューブ内径 = "Tube I.D."
 - シリンダ径 = "Cylinder Bore Size"
 - φD = "øD" (no space between ø and number)
-- 体系表 = "Series selection guide"
+- 体系表 = "System Chart"
 
 CRITICAL: SI UNIT SPACING (LAW_7/8):
 - Japanese: 50mm (no space)
@@ -357,7 +357,8 @@ Begin translation:
     def _build_multi_language_result(self, source_text: str, source_lang: str,
                                      target_langs: List[str], translations: Dict[str, str],
                                      model: str, cost_jpy: float, tokens_input: int,
-                                     tokens_output: int, tm_hits: int) -> Dict:
+                                     tokens_output: int, tm_hits: int,
+                                     simplification_result: Dict = None) -> Dict:
         """
         Build multi-language result dictionary with TAB-delimited output
         """
@@ -386,7 +387,7 @@ Begin translation:
         for target_lang in target_langs:
             try:
                 validation = self.validate_with_back_translation(
-                    source_text=original_source if source_lang == 'ja' else source_text,
+                    source_text=source_text,
                     translation=translations[target_lang],
                     source_lang=source_lang,
                     target_lang=target_lang
@@ -419,13 +420,13 @@ Begin translation:
             'tm_hits': tm_hits,
             'tm_hit_rate': (tm_hits / len(target_langs) * 100) if len(target_langs) > 0 else 0,
             'back_translation': back_translation_scores,  # NEW: Agent 63 results
-            'agent_0c_applied': simplification_result['rules_applied'] if source_lang == 'ja' else []  # NEW: Agent 0C tracking
+            'agent_0c_applied': simplification_result['rules_applied'] if simplification_result and source_lang == 'ja' else []  # FIXED: Added None check
         }
     
     def _build_V22_2_prompt(self, source_text: str, source_lang: str, target_lang: str,
                             input_format: str, preserve_tags: bool) -> str:
         """
-        Build complete V22.1 translation prompt (single target - for backwards compatibility)
+        Build complete V22.2 translation prompt (single target - for backwards compatibility)
         """
         return self._build_V22_2_multi_prompt(source_text, source_lang, [target_lang], 
                                               input_format, preserve_tags)
@@ -582,7 +583,7 @@ Begin translation:
             target_langs = ['en']  # Default
         
         try:
-            # Use V22.1 Master as system prompt
+            # Use V22.2 Master as system prompt
             response = self.grok_client.chat.completions.create(
                 model="grok-4.1-fast",  # Grok 4.1 (Nov 2025) - #1 LMArena, 65% less hallucinations
                 messages=[
@@ -829,8 +830,8 @@ Begin translation:
             self.cache_stats['total_calls'] += 1
             
             # Calculate cost with caching discount
-            # Cached tokens: $0.01875/1M (75% discount)
-            # Uncached tokens: $0.075/1M (normal price)
+            # Cached tokens: $0.125/1M (75% discount)
+            # Uncached tokens: $0.50/1M (normal price)
             cost_input_cached = cached_tokens / 1_000_000 * self.pricing['gemini-3-flash']['input_cached']
             cost_input_uncached = uncached_tokens / 1_000_000 * self.pricing['gemini-3-flash']['input']
             cost_output = tokens_output / 1_000_000 * self.pricing['gemini-3-flash']['output']
@@ -863,7 +864,7 @@ Begin translation:
     
     def _translate_with_claude(self, prompt: str, source_text: str, target_langs: List[str] = None) -> Dict:
         """Translate using Claude Sonnet 4.5 (backup) - supports multiple targets"""
-        raise Exception("Claude not implemented yet - V22.1 exceeds Claude's context window")
+        raise Exception("Claude not implemented yet - V22.2 exceeds Claude's context window")
     
     def _extract_bilingual_output(self, source: str, translation: str) -> str:
         """
@@ -1036,4 +1037,3 @@ class TranslationMemory:
             print(f"✅ TM backed up to: {backup_path}")
         except Exception as e:
             print(f"⚠️  Could not create backup: {e}")
-
