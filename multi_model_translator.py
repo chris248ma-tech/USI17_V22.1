@@ -212,14 +212,14 @@ class MultiModelTranslator:
                  grok_api_key: Optional[str] = None,
                  gemini_api_key: Optional[str] = None,
                  claude_api_key: Optional[str] = None,
-                 v22_1_path: str = "USI17_V22_1_MASTER.txt",
+                 V22_2_path: str = "USI17_V22_2_MASTER.txt",
                  max_budget_jpy: int = 30000):
         
         # Load V22.1 Master (if available)
-        self.v22_1_master = ""
-        if os.path.exists(v22_1_path):
-            with open(v22_1_path, 'r', encoding='utf-8') as f:
-                self.v22_1_master = f.read()
+        self.V22_2_master = ""
+        if os.path.exists(V22_2_path):
+            with open(V22_2_path, 'r', encoding='utf-8') as f:
+                self.V22_2_master = f.read()
         
         # Initialize components
         self.cost_tracker = CostTracker(max_budget_jpy)
