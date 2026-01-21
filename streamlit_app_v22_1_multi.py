@@ -5,7 +5,7 @@ Complete support for ANY of 17 languages as source → multiple targets
 
 import streamlit as st
 import os
-from v22_1_translator import USI17_V22_2_Translator
+from v22_1_translator import USI17_V22_1_Translator
 import tempfile
 
 # ============================================================================
