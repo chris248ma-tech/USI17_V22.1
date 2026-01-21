@@ -15,7 +15,7 @@ from rtf_processor import RTFProcessor
 from agent_0c_controlled_language import Agent_0C_Controlled_Language
 from agent_63_back_translation_validator import Agent_63_Back_Translation_Validator
 
-class USI17_V22_2_Translator:
+class USI17_V22_1_Translator:
     """
     Complete USI17 V22.2 translation system
     - 276 agents (0-266, excluding 226)
